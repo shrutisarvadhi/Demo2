@@ -1,0 +1,144 @@
+{
+  "quiz": [
+    {
+      "id": 1,
+      "topic": "HTML",
+      "question": "What does HTML stand for?",
+      "options": ["Hyper Text Markup Language", "Home Tool Markup Language", "Hyperlinks and Text Markup Language", "Hyperlinking Text Markup Language"],
+      "answer": "Hyper Text Markup Language"
+    },
+    {
+      "id": 2,
+      "topic": "HTML",
+      "question": "Which tag is used to create a hyperlink in HTML?",
+      "options": ["a", "link", "href", "hyperlink"],
+      "answer": "a"
+    },
+    {
+      "id": 3,
+      "topic": "HTML",
+      "question": "Which tag is used to insert an image in HTML?",
+      "options": ["img", "image", "pic", "src"],
+      "answer": "img"
+    },
+    {
+      "id": 4,
+      "topic": "CSS",
+      "question": "What does CSS stand for?",
+      "options": ["Cascading Style Sheets", "Computer Style Sheets", "Creative Style Syntax", "Colorful Style Sheets"],
+      "answer": "Cascading Style Sheets"
+    },
+    {
+      "id": 5,
+      "topic": "CSS",
+      "question": "Which property is used to change the background color?",
+      "options": ["color", "background", "bgcolor", "background-color"],
+      "answer": "background-color"
+    },
+    {
+      "id": 6,
+      "topic": "CSS",
+      "question": "Which CSS property controls the text size?",
+      "options": ["font-style", "text-size", "font-size", "text-style"],
+      "answer": "font-size"
+    },
+    {
+      "id": 7,
+      "topic": "CSS",
+      "question": "How do you make a list not display bullets?",
+      "options": ["list-style: none;", "list-type: none;", "bullet: off;", "text-decoration: none;"],
+      "answer": "list-style: none;"
+    },
+    {
+      "id": 8,
+      "topic": "JavaScript",
+      "question": "Which symbol is used for comments in JavaScript?",
+      "options": ["//", "#", "!-- --", "**"],
+      "answer": "//"
+    },
+    {
+      "id": 9,
+      "topic": "JavaScript",
+      "question": "How do you declare a JavaScript variable?",
+      "options": ["var name;", "v name;", "dim name;", "declare name;"],
+      "answer": "var name;"
+    },
+    {
+      "id": 10,
+      "topic": "JavaScript",
+      "question": "Which method converts JSON data to a JavaScript object?",
+      "options": ["JSON.parse()", "JSON.stringify()", "JSON.convert()", "JSON.decode()"],
+      "answer": "JSON.parse()"
+    },
+    {
+      "id": 11,
+      "topic": "HTML",
+      "question": "Which HTML tag is used to define an internal style sheet?",
+      "options": ["style", "script", "css", "head"],
+      "answer": "style"
+    },
+    {
+      "id": 12,
+      "topic": "HTML",
+      "question": "Which attribute is used to provide a unique identifier to an HTML element?",
+      "options": ["class", "id", "name", "key"],
+      "answer": "id"
+    },
+    {
+      "id": 13,
+      "topic": "CSS",
+      "question": "How do you select an element with id 'header' in CSS?",
+      "options": ["#header", ".header", "header", "*header"],
+      "answer": "#header"
+    },
+    {
+      "id": 14,
+      "topic": "CSS",
+      "question": "Which property is used to make text bold?",
+      "options": ["font-weight", "font-style", "text-bold", "weight"],
+      "answer": "font-weight"
+    },
+    {
+      "id": 15,
+      "topic": "CSS",
+      "question": "Which value of the position property makes an element stick to the top on scroll?",
+      "options": ["fixed", "absolute", "sticky", "relative"],
+      "answer": "sticky"
+    },
+    {
+      "id": 16,
+      "topic": "JavaScript",
+      "question": "Which keyword is used to define a constant in JavaScript?",
+      "options": ["const", "var", "static", "let"],
+      "answer": "const"
+    },
+    {
+      "id": 17,
+      "topic": "JavaScript",
+      "question": "What is the output of 'typeof null' in JavaScript?",
+      "options": ["object", "null", "undefined", "boolean"],
+      "answer": "object"
+    },
+    {
+      "id": 18,
+      "topic": "JavaScript",
+      "question": "What is a closure in JavaScript?",
+      "options": ["A function inside another function", "A variable that is global", "A block scope", "None of the above"],
+      "answer": "A function inside another function"
+    },
+    {
+      "id": 19,
+      "topic": "JavaScript",
+      "question": "Which function is used to execute a function after a delay?",
+      "options": ["setTimeout()", "setInterval()", "delay()", "executeLater()"],
+      "answer": "setTimeout()"
+    },
+    {
+      "id": 20,
+      "topic": "JavaScript",
+      "question": "Which array method removes the last element from an array?",
+      "options": ["pop()", "push()", "shift()", "slice()"],
+      "answer": "pop()"
+    }
+  ]
+}

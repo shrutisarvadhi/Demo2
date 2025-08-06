@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Registration</title>
+</head>
+<body>
+  <div>
+    <h1>Registration</h1>
+    <form id="registrationForm">
+      <label>Username</label>
+      <input name="username" required />
+      <label>Password</label>
+      <input name="password" type="password" required />
+      <button type="submit">Register</button>
+    </form>
+    <p>Already have an account? <a href="login.html">Login</a></p>
+  </div>
+
+  <script>
+    const form = document.getElementById("registrationForm");
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const username = form.username.value.trim();
+      const password = form.password.value.trim();
+
+      if (!username || !password) {
+        alert("Please fill in both fields.");
+        return;
+      }
+
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+
+      const userExists = users.some(user => user.username === username);
+
+      if (userExists) {
+        alert("User already exists!");
+      } else {
+        users.push({ username, password });
+        localStorage.setItem("users", JSON.stringify(users));
+        alert("Registration successful!");
+        window.location.href = "login.html";
+      }
+    });
+  </script>
+</body>
+</html>
