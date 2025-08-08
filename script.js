@@ -6,13 +6,15 @@ document.addEventListener("DOMContentLoaded", function () {
     let wrongAnswers = 0;
     let skippedQuestions = 0;
     let table = "";
-    let circle = "";
+    let time = 3000;
 
     const quizContainer = document.getElementById('quiz');
     const nextButton = document.getElementById('next');
     const skipButton = document.getElementById('skip');
     const finalSubmit = document.getElementById('finalSubmit');
-    const allQuestions = document.getElementById('all-questions')
+    const timerClock = document.getElementById('timer')
+    const allButtons = document.getElementById('button')
+    const countdownDiv = document.getElementsByClassName('countdown')
 
     fetch('quiz.json')
         .then(response => response.json())
@@ -23,6 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch(error => console.error('Error loading quiz:', error));
 
     function showQuestion(index) {
+
         clearTimeout(timer);
 
         const question = quizData[index];
@@ -48,12 +51,27 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
 
+        countdown = time / 1000;
+        timerClock.textContent = `${countdown} Seconds`;
+
+        countdownInterval = setInterval(() => {
+            countdown--;
+            timerClock.textContent = `${countdown} Seconds`;
+            if (countdown < 0) {
+                clearInterval(countdownInterval);
+            }
+        }, 1000);
         timer = setTimeout(() => {
             logAnswerAndNext();
-        }, 50000);
+        }, time);
+
+
     }
 
     function logAnswerAndNext() {
+        clearTimeout(timer);
+        clearInterval(countdownInterval);
+        
         const answer = quizData[currentQuestionIndex].answer;
         const selected = document.querySelector(`input[name="q${currentQuestionIndex}"]:checked`);
         let selectedValue;
@@ -98,7 +116,11 @@ document.addEventListener("DOMContentLoaded", function () {
             nextButton.style.display = 'none';
             skipButton.style.display = 'none';
             finalSubmit.style.display = 'none';
+            allButtons.style.display = 'none';
+            timerClock.style.display = 'none';
+            countdownDiv.style.display = 'none';
         }
+
     }
 
     nextButton.addEventListener('click', () => {

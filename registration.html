@@ -4,19 +4,32 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Registration</title>
+  <link rel="stylesheet" href="login.css">
 </head>
 <body>
-  <div>
-    <h1>Registration</h1>
-    <form id="registrationForm">
-      <label>Username</label>
-      <input name="username" required />
-      <label>Password</label>
-      <input name="password" type="password" required />
-      <button type="submit">Register</button>
-    </form>
-    <p>Already have an account? <a href="login.html">Login</a></p>
+  <div class="main-login">
+    <div class="quiz-content">
+      <h1>Let's Start</h1>
+      <h1>Quiz</h1>
+    </div>
+    <div class="second-login">
+      <div class="login-form">
+        <h1>Registration</h1><br>
+        <form id="loginForm">
+          <label>Username</label><br><br>
+          <input name="username" required /><br><br>
+          <label>Password</label><br><br>
+          <input name="password" type="password" required /><br><br>
+          <button type="submit">Register</button><br>
+        </form>
+        <br><p>Already have an account? <a href="login.html">Login</a></p>
+      </div>
+      <div class="image">
+        <img src="quiz image.jpg">
+      </div>
+    </div>
   </div>
+
 
   <script>
     const form = document.getElementById("registrationForm");
