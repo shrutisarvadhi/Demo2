@@ -8,15 +8,13 @@ body {
     font-family: "Inter", system-ui;
     overflow-x: hidden;
     width: 100%;
-    background-color: black;
-    color: white;
-    /* max-width: max-content; */
-    /* margin: auto; */
 }
-h1{
+
+h1 {
     text-align: center;
     margin: 50px;
 }
+
 #main-container {
     display: flex;
     flex-direction: column;
@@ -24,7 +22,7 @@ h1{
 
 #quiz {
     flex: 1 1 460px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     transition: 0.3s;
     padding: 50px;
     border-radius: 5px;
@@ -32,14 +30,13 @@ h1{
 }
 
 #quiz:hover {
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .option {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: 0.3s;
     border-radius: 5px;
-    /* margin-top: 10px; */
     padding: 5px;
 }
 
@@ -48,43 +45,25 @@ h1{
 }
 
 #button {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     transition: 0.3s;
     padding: 30px;
     border-radius: 5px;
 }
 
-#button #next {
+#button button {
     margin: 20px;
     padding: 5px;
     font-size: 16px;
-}
-
-#button #skip {
-    margin: 20px;
-    padding: 5px;
-    font-size: 16px;
-}
-
-#button #finalSubmit {
-    margin: 20px;
-    padding: 5px;
-    font-size: 16px;
-}
-
-.circle {
-    width: 100px;
-    height: 100px;
-    background-color: rgb(187, 187, 243);
-    border-radius: 50%;
 }
 
 #timer {
     width: 200px;
     height: 200px;
-    background-color: rgb(187, 187, 243);
+    background-color: rgb(234, 234, 234);
     border-radius: 50%;
     text-align: center;
+    font-size: 20px;
     line-height: 200px;
 }
 
@@ -96,4 +75,150 @@ h1{
 
 .countdown {
     margin: auto 100px;
+}
+
+.question-result {
+    margin-bottom: 30px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.question-text {
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.options-container {
+    margin-left: 20px;
+}
+
+.option-item {
+    padding: 8px 12px;
+    margin: 5px 0;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+}
+
+.correct-selected {
+    background-color: #94b995;
+    color: white;
+    border-color: #94b995;
+    font-weight: bold;
+}
+
+.wrong-selected {
+    background-color: #f15d537e;
+    border-color: #f15d53;
+    font-weight: bold;
+}
+
+.correct-answer {
+    background-color: #94b9958e;
+    border-color: #94b995;
+    font-weight: bold;
+}
+
+.no-selection {
+    background-color: #9e9e9e;
+    border-color: #757575;
+    font-weight: bold;
+}
+
+.results-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    max-height: 80vh;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.results-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.results-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.results-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.results-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+#camera-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 999;
+}
+
+#camera {
+    border-radius: 10px;
+    border: 2px solid #888;
+    background: black;
+}
+
+#camera-warning {
+    color: red;
+    font-weight: bold;
+    margin-top: 5px;
+    text-align: center;
+}
+
+#download-btn {
+    display: block;
+    margin: 30px auto 10px auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    background: #3f51b5;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+#download-btn:hover {
+    background: #2c3da9;
+}
+
+.score-text {
+    font-weight: bold;
+    font-size: 22px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.results-preview {
+    border: 2px dashed #aaa;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #fefefe;
+}
+
+#tts-toggle {
+    padding: 10px 15px;
+    margin: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+#tts-toggle:hover {
+    background-color: #388e3c;
 }
