@@ -2,34 +2,50 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Registration</title>
-  <link rel="stylesheet" href="login.css">
+  <link rel="stylesheet" href="login.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 </head>
 <body>
+  <!-- Header -->
+  <div class="quiz-header">
+    <h1>Let's Start Quiz</h1>
+  </div>
+
+  <!-- Main Registration Container -->
   <div class="main-login">
-    <div class="quiz-content">
-      <h1>Let's Start</h1>
-      <h1>Quiz</h1>
-    </div>
     <div class="second-login">
+      <!-- Registration Form -->
       <div class="login-form">
-        <h1>Registration</h1><br>
-        <form id="loginForm">
-          <label>Username</label><br><br>
-          <input name="username" required /><br><br>
-          <label>Password</label><br><br>
-          <input name="password" type="password" required /><br><br>
-          <button type="submit">Register</button><br>
+        <h2>Register</h2>
+        <form id="registrationForm">
+          <!-- Username Field -->
+          <div class="input-group">
+            <label for="username"><i class="fas fa-user"></i> Username</label>
+            <input type="text" id="username" name="username" required />
+          </div>
+
+          <!-- Password Field -->
+          <div class="input-group">
+            <label for="password"><i class="fas fa-lock"></i> Password</label>
+            <input type="password" id="password" name="password" required />
+          </div>
+
+          <!-- Register Button -->
+          <button type="submit" class="login-btn">REGISTER</button>
+
+          <!-- Login Link -->
+          <p class="register-link">Already have an account? <a href="login.html">Login</a></p>
         </form>
-        <br><p>Already have an account? <a href="login.html">Login</a></p>
       </div>
+
+      <!-- Image Section -->
       <div class="image">
-        <img src="quiz image.jpg">
+        <img src="quiz image.jpg" alt="Quiz Neon Sign" />
       </div>
     </div>
   </div>
-
 
   <script>
     const form = document.getElementById("registrationForm");

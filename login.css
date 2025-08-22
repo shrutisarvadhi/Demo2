@@ -1,59 +1,153 @@
+/* Reset & Base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: black;
-    color: white;
-    font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
 }
 
+/* Header (used on both pages) */
+.quiz-header {
+  background-color: #4B3D8A;
+  color: white;
+  text-align: center;
+  padding: 1rem 0;
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  font-weight: bold;
+}   
+
+/* Main Container */
 .main-login {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.quiz-content {
-    padding: 0px 50px 0px 0px;
-    font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 70px);
+  padding: 20px;
 }
 
 .second-login {
-    padding: 70px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 40px;
-    background-color: #131416;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(49, 49, 49, 0.1);
+  display: flex;
+  gap: 40px;
+  max-width: 1000px;
+  width: 100%;
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 }
 
+/* Form Styling (used in both login & register) */
 .login-form {
-    padding: 50px;
-    background-color: #000000;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(49, 49, 49, 0.1);
+  flex: 1;
+  padding: 30px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e0e0e0;
 }
 
-input,
-button {
-    padding: 3px;
-    width: 100%;
-    max-width: 250px;
-    border: none;
-    border-radius: 4px;
+.login-form h2 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: #1a1a1a;
 }
 
+.input-group {
+  margin-bottom: 16px;
+}
+
+.input-group label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border 0.3s ease;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: #7b43d0;
+  box-shadow: 0 0 0 2px rgba(118, 59, 188, 0.1);
+}
+
+/* Button (same class used for login/register) */
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #7b43d0;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+
+.login-btn:hover {
+  background-color: #6a38c2;
+}
+
+/* Register/Login Link (used on both pages) */
+.register-link {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.register-link a {
+  color: #7b43d0;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+/* Image Section */
+.image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.image img {
+  width: 100%;
+  max-width: 350px;
+  height: auto;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
-    .main-login {
-        flex-wrap: wrap;
-    }
+  .second-login {
+    flex-direction: column;
+    gap: 20px;
+  }
 
-    .second-login {
-        flex-wrap: wrap;
-    }
+  .login-form,
+  .image {
+    padding: 20px;
+  }
+
+  .quiz-header {
+    font-size: 1.5rem;
+  }
 }

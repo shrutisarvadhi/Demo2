@@ -12,17 +12,17 @@ let faceWarnings = 0;
 let quizPaused = false;
 let faceCheckInterval;
 
+const allQuiz = document.getElementById('ques-time');
 const quizContainer = document.getElementById('quiz');
 const nextButton = document.getElementById('next');
 const skipButton = document.getElementById('skip');
 const finalSubmit = document.getElementById('finalSubmit');
 const timerClock = document.getElementById('timer');
 const allButtons = document.getElementById('button');
-const countdownDiv = document.getElementsByClassName('countdown')[0];
 const warningDiv = document.getElementById('camera-warning');
 const ttsToggleBtn = document.getElementById('tts-toggle');
+const trackerContainer = document.getElementById("que-tracker");
 
-// --- TTS Setup ---
 let ttsEnabled = false;
 const synth = window.speechSynthesis;
 
@@ -32,7 +32,6 @@ ttsToggleBtn.addEventListener('click', () => {
     if (!ttsEnabled) {
         synth.cancel();
     } else {
-        // Speak current question immediately after enabling TTS
         const question = quizData[currentQuestionIndex];
         if (question) {
             let speechText = `Question ${currentQuestionIndex + 1}. ${question.question}. `;
@@ -49,11 +48,9 @@ function speak(text) {
 
     if (synth.speaking) {
         synth.cancel();
-
-        // Wait a short while for cancel to complete
         setTimeout(() => {
             actuallySpeak(text);
-        }, 250); // 250ms delay — enough for most systems
+        }, 250);
     } else {
         actuallySpeak(text);
     }
@@ -65,7 +62,6 @@ function actuallySpeak(text) {
     synth.speak(utterance);
 }
 
-// --- CAMERA / FACE DETECTION FUNCTIONS ---
 function hideCamera() {
     const container = document.getElementById('camera-container');
     if (container) container.style.display = 'none';
@@ -90,7 +86,6 @@ function updateWarningMessage(message) {
 async function startCameraAndDetection() {
     const video = document.getElementById('camera');
     warningDiv.style.display = 'none';
-    warningDiv.textContent = '';
     showCamera();
 
     await faceapi.nets.tinyFaceDetector.loadFromUri('./models');
@@ -98,9 +93,7 @@ async function startCameraAndDetection() {
     try {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
         video.srcObject = stream;
-        video.onloadedmetadata = () => {
-            video.play();
-        };
+        video.onloadedmetadata = () => video.play();
     } catch (err) {
         warningDiv.style.display = 'block';
         warningDiv.textContent = 'Cannot access camera!';
@@ -153,13 +146,10 @@ async function startCameraAndDetection() {
     }, 1000);
 }
 
-// --- QUIZ FLOW FUNCTIONS ---
-
 function pauseQuiz() {
     quizPaused = true;
     clearTimeout(timer);
     clearInterval(countdownInterval);
-    remainingTime = countdown * 1000;
     nextButton.disabled = true;
     skipButton.disabled = true;
     finalSubmit.disabled = true;
@@ -175,47 +165,73 @@ function resumeQuiz() {
     if (currentQuestionIndex < quizData.length) {
         countdown = remainingTime / 1000;
         timerClock.textContent = `${countdown} Seconds`;
-
         countdownInterval = setInterval(() => {
             countdown--;
             timerClock.textContent = `${countdown} Seconds`;
-            if (countdown <= 0) {
-                clearInterval(countdownInterval);
-            }
+            if (countdown <= 0) clearInterval(countdownInterval);
         }, 1000);
 
-        timer = setTimeout(() => {
-            logAnswerAndNext();
-        }, remainingTime);
+        timer = setTimeout(() => logAnswerAndNext(), remainingTime);
     }
 }
 
 function submitQuizDueToWarnings() {
-    // Clear everything related to quiz flow
     clearTimeout(timer);
     clearInterval(countdownInterval);
     clearInterval(faceCheckInterval);
     quizPaused = true;
+    synth.cancel();
 
-    // Stop any ongoing speech
-    synth.cancel(); // ← 🔈 This line stops TTS
-
-    // Disable all interaction
     nextButton.disabled = true;
     skipButton.disabled = true;
     finalSubmit.disabled = true;
-
-    // Optional: update warning message
     warningDiv.textContent = 'Quiz auto-submitted due to 3 face detection warnings.';
 
-    // Mark current question as skipped or incomplete (optional logic)
-    if (currentQuestionIndex < quizData.length) {
-        skippedQuestions += (quizData.length - currentQuestionIndex);
+    onQuizComplete();
+}
+
+function logCurrentAnswer() {
+    const question = quizData[currentQuestionIndex];
+    const answer = question.answer;
+    const selected = document.querySelector(`input[name="q${currentQuestionIndex}"]:checked`);
+
+    quizData[currentQuestionIndex].selected = !!selected;
+
+    if (selected) {
+        const selectedValue = selected.value;
+        if (question.options[selectedValue] === answer) {
+            rightAnswers++;
+        } else {
+            wrongAnswers++;
+        }
+    } else {
+        skippedQuestions++;
     }
 
-    // Skip all remaining questions and show results
-    currentQuestionIndex = quizData.length; // force end
-    onQuizComplete();
+    const correctAnswer = question.answer;
+    const options = question.options;
+    let optionsHTML = '';
+
+    options.forEach((option) => {
+        let className = 'option-item';
+        if (selected) {
+            const selectedOptionText = options[selected.value];
+            if (selectedOptionText === correctAnswer) {
+                if (option === selectedOptionText) className += ' correct-selected';
+            } else {
+                if (option === selectedOptionText) className += ' wrong-selected';
+                else if (option === correctAnswer) className += ' correct-answer';
+            }
+        } else {
+            if (option === correctAnswer) className += ' no-selection';
+        }
+        optionsHTML += `<p class="${className}">${option}</p>`;
+    });
+
+    table += `<div class="question-result">
+        <p class="question-text">Question ${currentQuestionIndex + 1}: ${question.question}</p>
+        <div class="options-container">${optionsHTML}</div>
+    </div>`;
 }
 
 fetch('./quiz.json')
@@ -232,6 +248,7 @@ function showQuestion(index) {
     clearInterval(countdownInterval);
     remainingTime = time;
     showCamera();
+    updateQuestionTracker();
 
     const question = quizData[index];
     let output = `<div class="question">${index + 1}. ${question.question}</div>`;
@@ -239,9 +256,9 @@ function showQuestion(index) {
     question.options.forEach((option, i) => {
         output += `
         <div class="option-div">
-        <label class="option">
-            <input type="radio" name="q${index}" value="${i}" id="id${i}"> ${option}
-        </label><br>
+            <label class="option">
+                <input type="radio" name="q${index}" value="${i}" id="id${i}"> ${option}
+            </label><br>
         </div>`;
     });
 
@@ -253,10 +270,11 @@ function showQuestion(index) {
     optionInputs.forEach(input => {
         input.addEventListener("change", () => {
             nextButton.disabled = false;
+            quizData[index].selected = true;
+            updateQuestionTracker();
         });
     });
 
-    // TTS Reading
     if (ttsEnabled) {
         let speechText = `Question ${index + 1}. ${question.question}. `;
         question.options.forEach((option, i) => {
@@ -267,18 +285,13 @@ function showQuestion(index) {
 
     countdown = time / 1000;
     timerClock.textContent = `${countdown} Seconds`;
-
     countdownInterval = setInterval(() => {
         countdown--;
         timerClock.textContent = `${countdown} Seconds`;
-        if (countdown < 0) {
-            clearInterval(countdownInterval);
-        }
+        if (countdown < 0) clearInterval(countdownInterval);
     }, 1000);
 
-    timer = setTimeout(() => {
-        logAnswerAndNext();
-    }, time);
+    timer = setTimeout(() => logAnswerAndNext(), time);
 }
 
 function logAnswerAndNext() {
@@ -287,9 +300,11 @@ function logAnswerAndNext() {
 
     const answer = quizData[currentQuestionIndex].answer;
     const selected = document.querySelector(`input[name="q${currentQuestionIndex}"]:checked`);
-    let selectedValue;
+
+    quizData[currentQuestionIndex].selected = !!selected;
+
     if (selected) {
-        selectedValue = selected.value;
+        const selectedValue = selected.value;
         if (quizData[currentQuestionIndex].options[selectedValue] === answer) {
             rightAnswers++;
         } else {
@@ -302,12 +317,12 @@ function logAnswerAndNext() {
     const question = quizData[currentQuestionIndex];
     const correctAnswer = question.answer;
     const options = question.options;
-
     let optionsHTML = '';
+
     options.forEach((option) => {
         let className = 'option-item';
         if (selected) {
-            const selectedOptionText = options[selectedValue];
+            const selectedOptionText = options[selected.value];
             if (selectedOptionText === correctAnswer) {
                 if (option === selectedOptionText) className += ' correct-selected';
             } else {
@@ -321,11 +336,9 @@ function logAnswerAndNext() {
     });
 
     table += `<div class="question-result">
-        <p class="question-text">Question ${currentQuestionIndex + 1} : ${question.question}</p>
-        <div class="options-container">
-            ${optionsHTML}
-        </div>
-        </div>`;
+        <p class="question-text">Question ${currentQuestionIndex + 1}: ${question.question}</p>
+        <div class="options-container">${optionsHTML}</div>
+    </div>`;
 
     currentQuestionIndex++;
 
@@ -336,24 +349,75 @@ function logAnswerAndNext() {
     }
 }
 
-function onQuizComplete() {
-    quizContainer.innerHTML = "<button id='submit'>Submit Quiz</button>";
-    hideCamera();
+function updateQuestionTracker() {
+    trackerContainer.innerHTML = "";
+    quizData.forEach((q, i) => {
+        const div = document.createElement("div");
+        div.classList.add("question-circle");
 
+        if (i === currentQuestionIndex) {
+            div.classList.add("current-question");
+        } else if (q.selected === true) {
+            div.classList.add("answered-question");
+        } else {
+            div.classList.add("unanswered-question");
+        }
+
+        div.textContent = i + 1;
+        trackerContainer.appendChild(div);
+    });
+}
+
+function processRemainingQuestions() {
+    for (let i = currentQuestionIndex; i < quizData.length; i++) {
+        const question = quizData[i];
+        const correctAnswer = question.answer;
+        const options = question.options;
+
+        let optionsHTML = '';
+        options.forEach((option) => {
+            let className = 'option-item';
+            if (option === correctAnswer) {
+                className += ' no-selection';
+            }
+            optionsHTML += `<p class="${className}">${option}</p>`;
+        });
+
+        table += `<div class="question-result">
+            <p class="question-text">Question ${i + 1}: ${question.question}</p>
+            <div class="options-container">${optionsHTML}</div>
+        </div>`;
+
+        skippedQuestions++;
+    }
+}
+
+function onQuizComplete() {
+    hideCamera();
+    trackerContainer.classList.add('submit-tracker');
+    updateQuestionTracker();
+
+    if (currentQuestionIndex < quizData.length) {
+        processRemainingQuestions();
+    }
+
+    const newButton = document.createElement('button');
+    newButton.classList.add('my-button');
+    newButton.textContent = 'Submit Quiz';
+    newButton.id = 'submit';
+    trackerContainer.insertAdjacentElement('afterend', newButton);
+
+    allQuiz.style.display = 'none';
     nextButton.style.display = 'none';
     skipButton.style.display = 'none';
     finalSubmit.style.display = 'none';
     allButtons.style.display = 'none';
     timerClock.style.display = 'none';
-    countdownDiv.style.display = 'none';
+    document.querySelector('.countdown').style.display = 'none';
 
-    const submitButton = document.getElementById('submit');
-    submitButton.addEventListener('click', () => {
+    document.getElementById('submit').addEventListener('click', () => {
         const mainContainer = document.getElementById("main-container");
-
-        const scoreText = `<div class="score-text">
-          Your Score: ${rightAnswers} / ${quizData.length}
-        </div>`;
+        const scoreText = `<div class="score-text">Your Score: ${rightAnswers} / ${quizData.length}</div>`;
 
         if (ttsEnabled) {
             speak(`Quiz completed. Your score is ${rightAnswers} out of ${quizData.length}.`);
@@ -362,20 +426,16 @@ function onQuizComplete() {
         const fullResults = `
             <div id="result-wrapper">
                 <div id="result-preview" class="results-preview">
-                <div id="result-pdf">
-                    ${scoreText}
-                    <div class="results-container">${table}</div>
-                </div>
+                    <div id="result-pdf">${scoreText}<div class="results-container">${table}</div></div>
                 </div>
                 <div style="text-align: center;">
-                <button id="confirm-download-btn">Download as PDF</button>
+                    <button id="confirm-download-btn">Download as PDF</button>
                 </div>
             </div>`;
 
         mainContainer.innerHTML = fullResults;
 
-        const downloadBtn = document.getElementById('confirm-download-btn');
-        downloadBtn.addEventListener('click', () => {
+        document.getElementById('confirm-download-btn').addEventListener('click', () => {
             const element = document.getElementById('result-pdf');
             const wrapper = document.getElementById('result-wrapper');
             const preview = document.getElementById('result-preview');
@@ -410,12 +470,9 @@ function onQuizComplete() {
             };
 
             html2pdf().set(opt).from(element).save().then(() => {
-                wrapper.style.maxHeight = originalStyles.wrapper.maxHeight;
-                wrapper.style.overflow = originalStyles.wrapper.overflow;
-                preview.style.maxHeight = originalStyles.preview.maxHeight;
-                preview.style.overflow = originalStyles.preview.overflow;
-                resultContainer.style.maxHeight = originalStyles.container.maxHeight;
-                resultContainer.style.overflow = originalStyles.container.overflow;
+                Object.assign(wrapper.style, originalStyles.wrapper);
+                Object.assign(preview.style, originalStyles.preview);
+                Object.assign(resultContainer.style, originalStyles.container);
             });
         });
     });
@@ -425,11 +482,20 @@ nextButton.addEventListener('click', () => {
     clearTimeout(timer);
     logAnswerAndNext();
 });
+
 skipButton.addEventListener('click', () => {
     clearTimeout(timer);
     logAnswerAndNext();
 });
+
 finalSubmit.addEventListener('click', () => {
     clearTimeout(timer);
+    clearInterval(countdownInterval);
+
+    if (currentQuestionIndex < quizData.length) {
+        logCurrentAnswer();
+        currentQuestionIndex++;
+    }
+
     onQuizComplete();
 });

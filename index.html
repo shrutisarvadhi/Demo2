@@ -12,10 +12,10 @@
 </head>
 
 <body>
-    <div style="display: flex; align-items: center; justify-content: center;">
-        <h1 id="quiz-header">Quick Quiz</h1>
+    <h1>Quick Quiz</h1>
+    <div class="main-header">
         <div id="camera-container">
-            <video id="camera" width="170" height="120" autoplay muted></video>
+            <video id="camera" width="200" height="150" autoplay muted></video>
             <div id="camera-warning"></div>
         </div>
     </div>
@@ -23,17 +23,21 @@
     <div id="main-container">
         <div id="ques-time">
             <div id="quiz"></div>
+            <div id="button">
+                <button id="skip">Skip</button>
+                <button id="next">Next</button>
+                <button id="finalSubmit">Submit</button>
+                <button id="tts-toggle">🔊 Enable Voice</button>
+            </div>          
+        </div>
+
+        <div id="second-container">
             <div class="countdown">
                 <div id="timer"></div>
             </div>
-        </div>
+            <div id="que-tracker"></div>
+        </div>  
 
-        <div id="button">
-            <button id="next">Next</button>
-            <button id="skip">Skip</button>
-            <button id="finalSubmit">Submit</button>
-            <button id="tts-toggle">🔊 Enable Voice</button>
-        </div>
     </div>
 </body>
 

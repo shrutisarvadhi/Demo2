@@ -1,42 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"> <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="login.css">
 </head>
-
 <body>
+
+  <!-- Header -->
+  <div class="quiz-header">
+    <h1>Let's Start Quiz</h1>
+  </div>
+
+  <!-- Main Login Container -->
   <div class="main-login">
-    <div class="quiz-content">
-      <h1>Let's Start</h1>
-      <h1>Quiz</h1>
-    </div>
     <div class="second-login">
+      <!-- Login Form -->
       <div class="login-form">
-        <h1>Login</h1><br>
+        <h2>Login</h2>
         <form id="loginForm">
-          <label>Username</label><br><br>
-          <input name="username" required /><br><br>
-          <label>Password</label><br><br>
-          <input name="password" type="password" required /><br><br>
-          <button type="submit">Login</button><br>
+          <!-- Username Field -->
+          <div class="input-group">
+            <label for="username"><i class="fas fa-user"></i> Username</label>
+            <input type="text" id="username" name="username" required />
+          </div>
+
+          <!-- Password Field -->
+          <div class="input-group">
+            <label for="password"><i class="fas fa-lock"></i> Password</label>
+            <input type="password" id="password" name="password" required />
+          </div>
+
+          <!-- Login Button -->
+          <button type="submit" class="login-btn">LOGIN</button>
+
+          <!-- Register Link -->
+          <p class="register-link">Don't have an account? <a href="registration.html">Register</a></p>
         </form>
-        <br><p>Don't have an account? <a href="registration.html">Register</a></p>
       </div>
+
+      <!-- Image Section -->
       <div class="image">
-        <img src="quiz image.jpg">
+        <img src="quiz image.jpg" alt="Quiz Neon Sign">
       </div>
     </div>
   </div>
 
-
   <script>
     const loginForm = document.getElementById("loginForm");
 
-    loginForm.addEventListener("submit", function (e) {
+    loginForm.addEventListener("submit", function(e) {
       e.preventDefault();
 
       const username = loginForm.username.value.trim();
@@ -55,5 +70,4 @@
     });
   </script>
 </body>
-
 </html>
